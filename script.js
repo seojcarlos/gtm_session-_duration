@@ -1,102 +1,188 @@
-
 /**
- * Duración de Sesión en GTM (V15.0) - Modificado para intervalos exponenciales por convertiam.com
- * Modificado para incluir intervalos de tiempo específicos (0, 5s, 15s, 30s, 1m, 2m, 3m, 4m, 5m, 10m, 15m, 20m, 25m).
- * Utilizando sessionStorage para rastrear eventos sin duplicación, con ajustes de intervalo dinámicos para una única sesión.
+ * Duración de Sesión en GTM (V21.0 - Final)
+ *
+ *
+ * CARACTERÍSTICAS:
+ * - Configurable vía Variable de GTM: Los hitos de tiempo se definen en la variable {{c_sessionMilestones}}.
+ * - Notificación de Error Integrada: Si sessionStorage está bloqueado, envía un único evento
+ * 'session_duration' con la etiqueta 'tracker_storage_blocked' y se desactiva.
+ * - Integridad de Datos: No mezcla métricas. O mide la duración de la sesión o notifica un error.
+ * - Alta Precisión: Usa timestamps para evitar la deriva de setInterval.
+ * - Código Robusto y Seguro: Usa try-catch y es 100% compatible con ES5.
+ * - by Juan Carlos Díaz Conveertiam.com
  */
-var sessionDuration = {
-    init: function() {
-        this.durationSeconds = this.getExistingDuration();
-        this.lastLabelFired = this.getExistingLastLabel();
-        this.setupInterval();
-        this.setupVisibilityChange();
-        if (this.durationSeconds === 0 && this.lastLabelFired === '') {
-            this.pushDataLayer(0); 
-        }
-    },
+(function() {
+    var sessionDurationTracker = {
+        // --- CONFIGURACIÓN ---
+        // GTM reemplazará '{{c_sessionMilestones}}' por el valor de tu variable.
+        // Asegúrate de que tu variable se llame c_sessionMilestones en la UI de GTM.
+        config: {
+            gtmVariableValue: '{{c_sessionMilestones}}',
+            defaultMilestones: '0,5,15,30,60,300' // Fallback si la variable de GTM está vacía.
+        },
+        MILESTONES: [],
 
-    getExistingDuration: function() {
-        var existingDuration = parseInt(sessionStorage.getItem('convertiam_session_duration'), 10);
-        return !isNaN(existingDuration) ? existingDuration : 0;
-    },
+        // --- ESTADO INTERNO ---
+        isDisabled: false, // El script se deshabilita si hay un error crítico.
+        timer: null,
+        timeWhenPaused: 0,
+        nextMilestoneIndex: 0,
+        storageKeys: {
+            startTime: 'gtm_session_start_time',
+            inactiveTime: 'gtm_session_inactive_time',
+            lastMilestoneIndex: 'gtm_session_last_milestone'
+        },
 
-    getExistingLastLabel: function() {
-        return sessionStorage.getItem('convertiam_last_label_fired') || '';
-    },
-
-    setupInterval: function() {
-        this.calculateInterval();
-        this.startInterval();
-    },
-
-    calculateInterval: function() {
-        var minutes = Math.floor(this.durationSeconds / 60);
-        if (minutes < 1) this.interval = 5000; // Cada 5 segundos durante el primer minuto
-        else if (minutes < 5) this.interval = 30000; // Cada 30 segundos hasta 5 minutos
-        else if (minutes < 15) this.interval = 60000; // Cada 60 segundos hasta 15 minutos
-        else this.interval = 300000; // Cada 5 minutos después de 15 minutos
-    },
-
-    startInterval: function() {
-        var self = this;
-        this.intervalInstance = setInterval(function() {
-            self.durationSeconds += self.interval / 1000;
-            sessionStorage.setItem('convertiam_session_duration', self.durationSeconds.toString());
-            self.calculateInterval(); // Recalcular el intervalo en cada tick
-            var currentLabel = self.getLabel(self.durationSeconds);
-            if (currentLabel !== self.lastLabelFired) {
-                self.pushDataLayer(self.durationSeconds);
-                self.lastLabelFired = currentLabel;
-                sessionStorage.setItem('convertiam_last_label_fired', currentLabel);
+        // --- MÉTODOS DE INICIALIZACIÓN Y CONFIGURACIÓN ---
+        generateLabel: function(seconds) {
+            if (seconds < 60) {
+                return seconds + '_seconds';
             }
-        }, this.interval);
-    },
+            var minutes = Math.floor(seconds / 60);
+            return minutes + '_minutes';
+        },
 
-    stopInterval: function() {
-        if (this.intervalInstance) {
-            clearInterval(this.intervalInstance);
-            this.intervalInstance = null;
-        }
-    },
+        loadConfig: function() {
+            try {
+                var milestoneString = this.config.gtmVariableValue;
+                // GTM puede devolver el string 'undefined' si la variable no existe.
+                if (!milestoneString || milestoneString === 'undefined') {
+                    milestoneString = this.config.defaultMilestones;
+                }
+                
+                var milestoneSeconds = milestoneString.split(',').map(function(s) {
+                    return parseInt(s.trim(), 10);
+                });
 
-    setupVisibilityChange: function() {
-        var self = this;
-        document.addEventListener("visibilitychange", function() {
-            if (document.hidden) {
-                self.stopInterval();
-            } else if (!sessionStorage.getItem('convertiam_last_label_fired')) {
-                self.startInterval();  // Reinicia el intervalo si la página se hace visible y no hay etiqueta previa
+                this.MILESTONES = milestoneSeconds
+                    .filter(function(s) { return !isNaN(s); })
+                    .sort(function(a, b) { return a - b; })
+                    .map(function(s) {
+                        return { seconds: s, label: this.generateLabel(s) };
+                    }, this);
+
+            } catch (e) {
+                console.error('GTM Session Tracker: Error fatal procesando la configuración de hitos.', e);
+                this.isDisabled = true; // Desactivar si la configuración es errónea.
             }
-        });
-    },
+        },
 
-    getLabel: function(seconds) {
-        var minutes = Math.floor(seconds / 60);
-        if (seconds < 5) return '0_seconds';
-        else if (seconds < 15) return '5_seconds';        git add .
-        else if (seconds < 30) return '15_seconds';
-        else if (seconds < 60) return '30_seconds';
-        else if (minutes < 2) return '1_minute';
-        else if (minutes < 3) return '2_minutes';
-        else if (minutes < 4) return '3_minutes';
-        else if (minutes < 5) return '4_minutes';
-        else if (minutes < 10) return '5_minutes';
-        else if (minutes < 15) return '10_minutes';
-        else if (minutes < 20) return '15_minutes';
-        else if (minutes < 25) return '20_minutes';
-        else return '25_minutes';
-    },
+        init: function() {
+            this.loadConfig();
+            if (this.isDisabled) return; // Detener si la configuración falló.
 
-    pushDataLayer: function(seconds) {
-        var label = this.getLabel(seconds);
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            'event': 'session_duration',
-            'session_duration_label': label
-        });
-        sessionStorage.setItem('convertiam_last_label_fired', label); // Actualizar la última etiqueta disparada
+            // Intenta acceder a sessionStorage. Este es el punto de control principal.
+            try {
+                sessionStorage.setItem('gtm_storage_test', 'test');
+                sessionStorage.removeItem('gtm_storage_test');
+            } catch (e) {
+                // FALLO CRÍTICO: El almacenamiento está bloqueado.
+                this.isDisabled = true;
+                console.warn('GTM Session Tracker: sessionStorage no accesible. Notificando y desactivando tracker.', e);
+                // Notificar el error usando el activador existente.
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'session_duration',
+                    'session_duration_label': 'tracker_storage_blocked'
+                });
+                return; // Detener toda ejecución posterior.
+            }
+
+            // Si llegamos aquí, el almacenamiento funciona. Procedemos con la operación normal.
+            this.loadState();
+            this.startTimer();
+            this.setupVisibilityChange();
+
+            if (this.nextMilestoneIndex === 0) {
+                this.fireMilestone(0);
+            }
+        },
+
+        loadState: function() {
+            var now = new Date().getTime();
+            var startTime = sessionStorage.getItem(this.storageKeys.startTime);
+            
+            if (!startTime) {
+                startTime = now;
+                sessionStorage.setItem(this.storageKeys.startTime, startTime);
+            }
+
+            this.startTime = parseInt(startTime, 10);
+            this.inactiveTime = parseInt(sessionStorage.getItem(this.storageKeys.inactiveTime) || '0', 10);
+            this.nextMilestoneIndex = parseInt(sessionStorage.getItem(this.storageKeys.lastMilestoneIndex) || '0', 10);
+        },
+
+        // --- MÉTODOS DE OPERACIÓN ---
+        startTimer: function() {
+            if (this.timer || this.isDisabled) return;
+            var self = this;
+            this.timer = setInterval(function() {
+                self.checkMilestones();
+            }, 1000);
+        },
+
+        stopTimer: function() {
+            clearInterval(this.timer);
+            this.timer = null;
+        },
+
+        checkMilestones: function() {
+            if (this.isDisabled) {
+                this.stopTimer();
+                return;
+            }
+            var activeTime = Math.floor((new Date().getTime() - this.startTime - this.inactiveTime) / 1000);
+            var nextMilestone = this.MILESTONES[this.nextMilestoneIndex];
+
+            if (nextMilestone && activeTime >= nextMilestone.seconds) {
+                this.fireMilestone(this.nextMilestoneIndex);
+            }
+        },
+
+        fireMilestone: function(milestoneIndex) {
+            var milestone = this.MILESTONES[milestoneIndex];
+            if (!milestone) {
+                this.stopTimer();
+                return;
+            }
+
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'session_duration',
+                'session_duration_label': milestone.label,
+                'session_duration_seconds': milestone.seconds
+            });
+
+            this.nextMilestoneIndex = milestoneIndex + 1;
+            sessionStorage.setItem(this.storageKeys.lastMilestoneIndex, this.nextMilestoneIndex.toString());
+        },
+
+        setupVisibilityChange: function() {
+            if (this.isDisabled) return;
+            var self = this;
+            document.addEventListener("visibilitychange", function() {
+                if (self.isDisabled) return;
+                if (document.hidden) {
+                    self.stopTimer();
+                    self.timeWhenPaused = new Date().getTime();
+                } else {
+                    if (self.timeWhenPaused > 0) {
+                        var elapsedWhileHidden = new Date().getTime() - self.timeWhenPaused;
+                        self.inactiveTime += elapsedWhileHidden;
+                        sessionStorage.setItem(self.storageKeys.inactiveTime, self.inactiveTime.toString());
+                        self.timeWhenPaused = 0;
+                    }
+                    self.startTimer();
+                }
+            });
+        }
+    };
+
+    // --- PUNTO DE ENTRADA ---
+    // Envolvemos la ejecución en una función anónima y un try-catch final como red de seguridad.
+    try {
+        sessionDurationTracker.init();
+    } catch (e) {
+        console.error('GTM Session Tracker: Error fatal inesperado durante la inicialización.', e);
     }
-};
-
-sessionDuration.init();
-
+})();
