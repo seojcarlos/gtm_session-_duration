@@ -1,67 +1,251 @@
-✨ Rastreador Avanzado de Duración de Sesión para GTM
-Bienvenido al que probablemente sea el script de seguimiento de duración de sesión más robusto, preciso y flexible que puedas implementar en Google Tag Manager.
+# ✨ Rastreador Avanzado de Duración de Sesión V24.0 para GTM
 
-Este no es un simple temporizador. Es una solución de nivel profesional diseñada para ofrecer datos de la más alta calidad, con una arquitectura resiliente que protege la integridad de tu analítica y la experiencia de tus usuarios.
+Bienvenido al que **definitivamente** es el script de seguimiento de duración de sesión más robusto, inteligente y flexible que puedas implementar en Google Tag Manager.
 
-🚀 ¿Por Qué Este Script es Diferente?
-Mientras que la mayoría de los scripts se limitan a contar segundos, esta solución fue concebida para resolver los problemas del mundo real a los que se enfrentan los analistas y desarrolladores:
+Este no es un simple temporizador. Es una solución de **nivel enterprise** diseñada para ofrecer datos de la más alta calidad, con una arquitectura resiliente que protege la integridad de tu analítica y la experiencia de tus usuarios, ahora con **capacidades cross-subdomain** y **detección automática de contexto**.
 
-Precisión Absoluta: Olvídate de los errores acumulados de setInterval. Usamos timestamps para medir el tiempo real que un usuario pasa activamente en tu sitio, con una precisión milimétrica.
-Integridad de Datos Inquebrantable: ¿Un usuario navega en modo incógnito o tiene la sessionStorage bloqueada? Otros scripts fallan o, peor aún, envían datos "sucios". El nuestro detecta el problema, notifica y se desactiva elegantemente, protegiendo la calidad de tus informes.
-Configuración Centralizada en GTM: No necesitas tocar el código para ajustar los intervalos. Toda la configuración se gestiona desde una Variable de GTM, permitiendo un control total desde la interfaz que ya conoces y amas.
-Arquitectura a Prueba de Balas: Envuelto en múltiples capas de seguridad try...catch, este script está diseñado para ser un ciudadano ejemplar en tu sitio web: nunca romperá la ejecución de otras funcionalidades.
-⚙️ Guía de Instalación y Configuración
-Implementar esta potente herramienta es un proceso sencillo y directo. Sigue estos tres pasos:
+---
 
-✅ Paso 1: Crear la Variable de Configuración en GTM
-Esta variable le dirá al script en qué momentos debe disparar un evento.
+## 🚀 ¿Por Qué Este Script V24.0 es Diferente?
 
-En GTM, ve a Variables → Variables definidas por el usuario → Nueva.
-Tipo de Variable: Constante.
-Nombre de la Variable: c_sessionMilestones (es importante que el nombre sea exacto).
-Valor: Introduce los segundos de los hitos que deseas medir, separados por comas.
-💡 Ejemplo de Valor:
+Mientras que la mayoría de los scripts se limitan a contar segundos, esta solución fue concebida para resolver los problemas del mundo real a los que se enfrentan los analistas y desarrolladores modernos:
 
-0,5,15,30,60,180,300,600
-(Esto disparará eventos a los 0s, 5s, 15s, 30s, 1m, 3m, 5m y 10m)
+### 🎯 **Precisión Absoluta con Inteligencia Contextual**
+- **Timestamps reales**: Olvídate de los errores acumulados de `setInterval`. Medimos el tiempo real que un usuario pasa **activamente** en tu sitio.
+- **Detección automática**: El script **sabe** cuándo está midiendo segundos vs minutos y ajusta las variables automáticamente.
+- **Cross-subdomain nativo**: Una sesión que comienza en `blog.tusite.com` continúa perfectamente en `shop.tusite.com`.
 
-✅ Paso 2: Crear la Etiqueta de Script Personalizado
-Aquí es donde vive la magia.
+### 🛡️ **Integridad de Datos Inquebrantable**
+- **Sistema de fallback inteligente**: ¿Cookies bloqueadas? Pasa a localStorage. ¿También bloqueado? Usa sessionStorage. ¿Modo incógnito extremo? Funciona en memoria.
+- **Validación de sesión**: Detecta y descarta sesiones corruptas o demasiado antiguas automáticamente.
+- **Protección de calidad**: Si algo falla, se desactiva elegantemente, protegiendo la pureza de tus datos.
 
-Ve a Etiquetas → Nueva.
-Configuración de la etiqueta: HTML Personalizado.
-Nombra la etiqueta: Algo descriptivo, como Custom HTML - Session Duration Tracker.
-Pega el siguiente código en el cuadro de HTML: añade al script las etiquetas de apertuta y cierre <script></script>
+### ⚙️ **Configuración Ultra-Flexible**
+- **Variables específicas**: `tiempo_seconds` para segundos, `tiempo_minuts` para minutos - como debe ser.
+- **Milestones configurables**: Desde `0,5,15,30` hasta `60,120,300,1800` - tú decides qué medir.
+- **Control total desde GTM**: Cambiar configuración = cambiar una variable. Sin tocar código.
 
-✅ Paso 3: Configurar el Activador
-El script está diseñado para funcionar con un único activador que captura todos sus eventos.
+### 🔧 **Arquitectura de Nivel Profesional**
+- **Debugging integrado**: Logs detallados, información de estado, monitoreo en tiempo real.
+- **Compatibility layer**: Funciona en todos los navegadores, incluso los más antiguos.
+- **Zero-impact design**: Nunca romperá la ejecución de otras funcionalidades.
 
-En la configuración de tu nueva etiqueta, ve a la sección Activación.
-Crea un nuevo activador de tipo Evento personalizado.
-Nombre del evento: session_duration
-Este activador se déclenche sur: Todos los eventos personalizados.
-Guarda el activador y la etiqueta.
-🛡️ Gestión de Errores: La Notificación Inteligente
-La verdadera potencia se demuestra cuando las cosas van mal.
+---
 
-⚠️ ¿Qué pasa si sessionStorage está bloqueado?
-El script no se rompe. En su lugar, realiza una única acción: empuja un evento al dataLayer con la etiqueta tracker_storage_blocked.
+## ⚙️ Guía de Instalación y Configuración
 
-dataLayer.push({ event: 'session_duration', session_duration_label: 'tracker_storage_blocked' })
+Implementar esta bestia de la ingeniería es sorprendentemente sencillo. Sigue estos pasos:
 
-Después, se desactiva por completo. Esto te da una doble victoria: tu sitio sigue funcionando a la perfección y tú obtienes datos procesables sobre cuántos usuarios experimentan este bloqueo.
+### ✅ **Paso 1: Crear la Variable de Configuración en GTM**
 
-📊 Análisis de Datos: Sacando Partido a la Información
-Ahora que todo está configurado, puedes explotar estos datos en tus herramientas de análisis.
+Esta variable le dice al script cuándo disparar eventos con **total flexibilidad**:
 
-Crea una Variable de Capa de Datos en GTM para capturar la etiqueta de duración:
+1. En GTM: **Variables** → **Variables definidas por el usuario** → **Nueva**
+2. **Tipo**: Constante
+3. **Nombre**: `c_sessionMilestones` *(exacto, es case-sensitive)*
+4. **Valor**: Los segundos que quieres medir, separados por comas
 
-Nombre de la Variable: dlv - session_duration_label
-Versión de la capa de datos: Versión 2
-Nombre de la variable de la capa de datos: session_duration_label
-Utiliza esta variable en tus etiquetas (ej. Google Analytics):
+#### 💡 **Ejemplos de Configuración Inteligente:**
 
-Puedes configurar la "Acción de evento" de tu etiqueta de GA para que sea {{dlv - session_duration_label}}.
-Esto enviará automáticamente acciones como 5_seconds, 1_minute o la importantísima tracker_storage_blocked, dándote una visión completa y limpia en tus informes.
+```javascript
+// Para sitios de contenido (lectura)
+"0,5,15,30,60,180,300,600"
 
-Si Quieres que te lo implemente yo contactame jcarlos@convertiam.com
+// Para e-commerce (decisión de compra)  
+"0,10,30,60,120,300,600,1200"
+
+// Para SaaS (engagement profundo)
+"0,5,15,30,60,120,300,600,900,1800"
+
+// Solo segundos (landing pages)
+"0,5,10,15,30,45"
+
+// Solo minutos (aplicaciones)
+"60,120,180,300,600,900,1200,1500,1800"
+```
+
+**El script automáticamente detecta:**
+- `< 60` segundos → Variable `tiempo_seconds`
+- `≥ 60` segundos → Variable `tiempo_minuts` (convierte a minutos)
+
+### ✅ **Paso 2: Implementar el Script**
+
+1. **Etiquetas** → **Nueva** → **HTML Personalizado**
+2. **Nombre**: `Session Duration Tracker V24.0`
+3. **Activa** en: `All Pages` (o tu trigger preferido)
+4. **Pega el código** del script V24.0
+
+### ✅ **Paso 3: Configurar el Activador Universal**
+
+El script usa un **único evento** para todo:
+
+1. **Activadores** → **Nuevo** → **Evento personalizado**
+2. **Nombre del evento**: `session_duration`
+3. **Aplica a**: `Todos los eventos personalizados`
+
+---
+
+## 📊 **Datos que Recibirás (DataLayer)**
+
+### **Para Segundos** (ej: 15 segundos):
+```javascript
+{
+  'event': 'session_duration',
+  'tiempo_seconds': 15,
+  'session_duration_label': '15_seconds',
+  'session_duration_seconds': 15,
+  'session_storage_method': 'cookies',
+  'session_cross_subdomain': true,
+  'session_tracker_version': 'V24.0'
+}
+```
+
+### **Para Minutos** (ej: 300 segundos = 5 minutos):
+```javascript
+{
+  'event': 'session_duration', 
+  'tiempo_minuts': 5,
+  'session_duration_label': '5_minutes',
+  'session_duration_seconds': 300,
+  'session_storage_method': 'cookies',
+  'session_cross_subdomain': true,
+  'session_tracker_version': 'V24.0'
+}
+```
+
+### **Caso Especial - Carga de Página**:
+```javascript
+{
+  'event': 'session_duration',
+  'tiempo_seconds': 0,
+  'session_duration_label': 'page_load',
+  // ... resto de datos
+}
+```
+
+---
+
+## 🛡️ **Gestión de Errores: La Diferencia Profesional**
+
+### ⚠️ **Detección Automática de Problemas**
+
+El script V24.0 no solo funciona - **se adapta**:
+
+- **Cookies bloqueadas** → Fallback a localStorage
+- **LocalStorage deshabilitado** → Fallback a sessionStorage  
+- **Todo bloqueado** → Modo memoria (funcionalidad limitada)
+
+### 📊 **Eventos de Diagnóstico**
+
+Si hay problemas, recibirás eventos informativos:
+```javascript
+{
+  'event': 'session_duration',
+  'session_duration_label': 'tracker_storage_blocked',
+  'session_storage_method': 'memory'
+}
+```
+
+---
+
+## 🔍 **Debugging y Monitoreo Avanzado**
+
+### **Comandos de Consola (Modo Dios):**
+
+```javascript
+// Activar logging detallado
+gtmSessionTrackerDebug.enableDebug();
+
+// Ver estado completo de la sesión
+gtmSessionTrackerDebug.getInfo();
+
+// Ver todos los milestones configurados  
+gtmSessionTrackerDebug.getMilestones();
+
+// Desactivar logs
+gtmSessionTrackerDebug.disableDebug();
+```
+
+### **Información que obtendrás:**
+- Tiempo total vs tiempo activo
+- Método de storage utilizado
+- Milestones alcanzados y pendientes
+- Capacidad cross-subdomain
+- Estado de cookies/localStorage
+
+---
+
+## 🧹 **Testing y Depuración**
+
+### **Limpiar Estado para Testing:**
+```javascript
+// Borrar solo la cookie del tracker
+document.cookie = "gtm_session_tracker_state=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+localStorage.removeItem('gtm_session_tracker_state');
+sessionStorage.removeItem('gtm_session_tracker_state');
+console.log("Tracker reseteado - sesión nueva en próxima carga");
+```
+
+### **Verificar Funcionamiento:**
+1. Abre DevTools → Console
+2. Ejecuta: `gtmSessionTrackerDebug.enableDebug()`
+3. Recarga la página
+4. Observa los logs del tracker
+
+---
+
+## 🎯 **Casos de Uso Reales**
+
+### **E-commerce:**
+```javascript
+"0,10,30,60,120,300,600" // Momento de decisión de compra
+```
+
+### **Content/Blog:**
+```javascript
+"0,15,30,60,180,300,600,1200" // Engagement de lectura
+```
+
+### **SaaS/App:**
+```javascript
+"0,30,60,180,300,600,1200,1800" // Uso profundo de producto
+```
+
+### **Landing Page:**
+```javascript
+"0,5,10,15,30,45" // Micro-interacciones
+```
+
+---
+
+## 💡 **Pro Tips**
+
+1. **Cross-subdomain**: Funciona automáticamente si usas cookies
+2. **Testing**: Usa modo incógnito para sesiones limpias
+3. **Análisis**: Combina `tiempo_seconds` y `tiempo_minuts` en GA4 para insights completos
+4. **Performance**: El script se auto-desactiva cuando completa todos los milestones
+
+---
+
+## 🤝 **Soporte Profesional**
+
+¿Necesitas implementación personalizada, configuración específica para tu caso de uso, o integración con herramientas enterprise?
+
+**📧 Contacto:** jcarlos@convertiam.com
+
+*"No solo instalamos el tracker - construimos la estrategia de medición completa para tu negocio."*
+
+---
+
+**Convertiam.com** - *Donde la analítica web se convierte en ventaja competitiva*
+
+---
+
+### 📈 **Versión V24.0 - Changelog**
+- ✅ Milestones completamente configurables
+- ✅ Variables específicas tiempo_seconds/tiempo_minuts  
+- ✅ Detección automática segundos vs minutos
+- ✅ Cross-subdomain nativo con fallbacks
+- ✅ Sistema de storage resiliente
+- ✅ Debugging avanzado integrado
+- ✅ Compatibilidad total con versiones anteriores
