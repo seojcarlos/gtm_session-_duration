@@ -227,13 +227,77 @@ console.log("Tracker reseteado - sesión nueva en próxima carga");
 
 ---
 
+## 📜 **Licencia y Atribución**
+
+### **🔒 Términos de Uso**
+
+Este script está desarrollado por **Convertiam.com** y **Juan Carlos Díaz**. Es de **uso gratuito** bajo las siguientes condiciones:
+
+#### ✅ **Permitido:**
+- ✅ Uso comercial y personal
+- ✅ Modificación del código para tus necesidades
+- ✅ Redistribución (con atribución obligatoria)
+- ✅ Implementación en proyectos de clientes
+
+#### ⚠️ **Requisitos Obligatorios:**
+- 🏷️ **Mantener los comentarios de atribución** en el código
+- 📝 **Mencionar a Convertiam.com** en documentación del proyecto
+- 🔗 **Enlazar a este repositorio** si redistribuyes
+- 👨‍💻 **Crédito a Juan Carlos Díaz** como autor original
+
+#### ❌ **Prohibido:**
+- ❌ Revender el script como producto propio
+- ❌ Quitar los créditos del código fuente
+- ❌ Reclamar autoría del trabajo
+
+### **📄 Atribución Requerida:**
+```
+GTM Session Duration Tracker V24.0
+Desarrollado por Juan Carlos Díaz - Convertiam.com
+Contacto: jcarlos@convertiam.com
+```
+
+---
+
 ## 🤝 **Soporte Profesional**
 
-¿Necesitas implementación personalizada, configuración específica para tu caso de uso, o integración con herramientas enterprise?
+### **🚀 ¿Necesitas Más que un Script?**
 
-**📧 Contacto:** jcarlos@convertiam.com
+En **Convertiam.com** no solo creamos herramientas - construimos **ecosistemas completos de medición**:
 
-*"No solo instalamos el tracker - construimos la estrategia de medición completa para tu negocio."*
+- 🎯 **Implementación enterprise** con configuración personalizada
+- 📊 **Estrategia de medición** completa para tu negocio
+- 🔧 **Integración avanzada** con GA4, Adobe Analytics, mixpanel, etc.
+- 📈 **Dashboard personalizados** y automatización de reportes
+- 🛡️ **Auditorías de tracking** y optimización de rendimiento
+
+### **📧 Contacto Directo:**
+**Juan Carlos Díaz**  
+📧 **Email:** jcarlos@convertiam.com  
+🌐 **Web:** convertiam.com  
+💼 **LinkedIn:** [Juan Carlos Díaz - Convertiam](mailto:jcarlos@convertiam.com)
+
+*"No solo instalamos el tracker - diseñamos la arquitectura de datos que impulsa tu crecimiento."*
+
+---
+
+## 🏢 **Sobre Convertiam**
+
+**Convertiam.com** es la consultora especializada en **analítica web avanzada** y **optimización de conversión** para empresas que buscan datos que realmente importen.
+
+### **🎯 Nuestros Servicios:**
+- 📊 **Implementación de tracking avanzado** (GA4, GTM, Data Studios)
+- 🔍 **Auditorías técnicas** de medición y rendimiento
+- 📈 **Estrategia de datos** y arquitectura de medición
+- 🚀 **CRO y optimización** basada en datos
+- 🎓 **Formación técnica** para equipos internos
+
+### **💼 ¿Por Qué Elegirnos?**
+- ✅ **+8 años** especializados en analítica web
+- ✅ **+200 proyectos** implementados exitosamente  
+- ✅ **Certificados oficiales** en todas las plataformas principales
+- ✅ **Código abierto** - contribuimos a la comunidad
+- ✅ **Soporte técnico** real, no bots
 
 ---
 
@@ -249,3 +313,16 @@ console.log("Tracker reseteado - sesión nueva en próxima carga");
 - ✅ Sistema de storage resiliente
 - ✅ Debugging avanzado integrado
 - ✅ Compatibilidad total con versiones anteriores
+
+---
+
+### **⭐ ¿Te Ha Sido Útil?**
+
+Si este script te ha ahorrado tiempo y te ha dado mejores datos:
+
+1. ⭐ **Star** este repositorio
+2. 🔄 **Comparte** con tu equipo
+3. 💬 **Menciona** @convertiam en redes sociales
+4. 📧 **Cuéntanos** tu caso de éxito: jcarlos@convertiam.com
+
+**¡Tu éxito es nuestro mejor marketing!** 🚀
