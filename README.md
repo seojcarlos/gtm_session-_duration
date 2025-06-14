@@ -254,6 +254,7 @@ Este script está desarrollado por **Convertiam.com** y **Juan Carlos Díaz**. E
 ```
 GTM Session Duration Tracker V24.0
 Desarrollado por Juan Carlos Díaz - Convertiam.com
+Web: https://convertiam.com?utm_source=attribution&utm_medium=code_credit&utm_campaign=session_tracker_v24
 Contacto: jcarlos@convertiam.com
 ```
 
@@ -263,7 +264,7 @@ Contacto: jcarlos@convertiam.com
 
 ### **🚀 ¿Necesitas Más que un Script?**
 
-En **Convertiam.com** no solo creamos herramientas - construimos **ecosistemas completos de medición**:
+En **[Convertiam.com](https://convertiam.com?utm_source=github&utm_medium=readme&utm_campaign=session_tracker_v24&utm_content=servicios_profesionales)** no solo creamos herramientas - construimos **ecosistemas completos de medición**:
 
 - 🎯 **Implementación enterprise** con configuración personalizada
 - 📊 **Estrategia de medición** completa para tu negocio
@@ -274,8 +275,8 @@ En **Convertiam.com** no solo creamos herramientas - construimos **ecosistemas c
 ### **📧 Contacto Directo:**
 **Juan Carlos Díaz**  
 📧 **Email:** jcarlos@convertiam.com  
-🌐 **Web:** convertiam.com  
-💼 **LinkedIn:** [Juan Carlos Díaz - Convertiam](mailto:jcarlos@convertiam.com)
+🌐 **Web:** [convertiam.com](https://convertiam.com?utm_source=github&utm_medium=readme&utm_campaign=session_tracker_v24&utm_content=contacto_directo)  
+💼 **LinkedIn:** [Juan Carlos Díaz - Convertiam](https://www.linkedin.com/in/juancarlosdiazsanchez/)
 
 *"No solo instalamos el tracker - diseñamos la arquitectura de datos que impulsa tu crecimiento."*
 
@@ -283,7 +284,7 @@ En **Convertiam.com** no solo creamos herramientas - construimos **ecosistemas c
 
 ## 🏢 **Sobre Convertiam**
 
-**Convertiam.com** es la consultora especializada en **analítica web avanzada** y **optimización de conversión** para empresas que buscan datos que realmente importen.
+**[Convertiam.com](https://convertiam.com?utm_source=github&utm_medium=readme&utm_campaign=session_tracker_v24&utm_content=sobre_convertiam)** es la consultora especializada en **analítica web avanzada** y **optimización de conversión** para empresas que buscan datos que realmente importen.
 
 ### **🎯 Nuestros Servicios:**
 - 📊 **Implementación de tracking avanzado** (GA4, GTM, Data Studios)
@@ -301,7 +302,7 @@ En **Convertiam.com** no solo creamos herramientas - construimos **ecosistemas c
 
 ---
 
-**Convertiam.com** - *Donde la analítica web se convierte en ventaja competitiva*
+**[Convertiam.com](https://convertiam.com?utm_source=github&utm_medium=readme&utm_campaign=session_tracker_v24&utm_content=footer_branding)** - *Donde la analítica web se convierte en ventaja competitiva*
 
 ---
 
